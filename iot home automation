@@ -1,0 +1,65 @@
+import RPi.GPIO as GPIO
+import time
+
+# Setup GPIO mode and pins
+GPIO.setmode(GPIO.BOARD)
+
+# Define GPIO pins for controlling devices (e.g., light and fan)
+light_pin = 11  # Pin for light
+fan_pin = 13    # Pin for fan
+
+# Setup the pins as output
+GPIO.setup(light_pin, GPIO.OUT)
+GPIO.setup(fan_pin, GPIO.OUT)
+
+def control_device(device, action):
+    """Control a device (light or fan) with a specific action (on/off)"""
+    if device == "light":
+        if action == "on":
+            GPIO.output(light_pin, GPIO.HIGH)  # Turn on light
+            print("Light is ON")
+        elif action == "off":
+            GPIO.output(light_pin, GPIO.LOW)   # Turn off light
+            print("Light is OFF")
+        else:
+            print("Invalid action for light")
+    elif device == "fan":
+        if action == "on":
+            GPIO.output(fan_pin, GPIO.HIGH)  # Turn on fan
+            print("Fan is ON")
+        elif action == "off":
+            GPIO.output(fan_pin, GPIO.LOW)   # Turn off fan
+            print("Fan is OFF")
+        else:
+            print("Invalid action for fan")
+    else:
+        print("Invalid device")
+
+def main():
+    while True:
+        # Get user input to control the devices
+        print("\nHome Automation System")
+        print("1. Control Light")
+        print("2. Control Fan")
+        print("3. Exit")
+        
+        choice = input("Enter your choice (1/2/3): ")
+        
+        if choice == "1":
+            action = input("Do you want to turn the light on or off? (on/off): ").lower()
+            control_device("light", action)
+        elif choice == "2":
+            action = input("Do you want to turn the fan on or off? (on/off): ").lower()
+            control_device("fan", action)
+        elif choice == "3":
+            print("Exiting program...")
+            break
+        else:
+            print("Invalid choice. Please choose 1, 2, or 3.")
+        
+        time.sleep(2)  # Wait for 2 seconds before the next action
+
+    GPIO.cleanup()  # Clean up GPIO settings
+
+if _name_ == "_main_":
+    main()
